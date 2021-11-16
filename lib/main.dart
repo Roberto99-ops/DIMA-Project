@@ -37,9 +37,9 @@ class TabApp extends StatelessWidget {
             ],),
           ),
           body: TabBarView(children: [
-            CreateView(name: 'Take photos', camera: camera),
-            CreateView(name: 'Links'),
-            CreateView(name: 'Favourites'),
+            CreateViewPhoto(name: 'Take photos', camera: camera),
+            CreateViewFiles(name: 'Links'),
+            CreateViewFiles(name: 'Favourites'),
           ],),
         ),
       ),
@@ -47,12 +47,30 @@ class TabApp extends StatelessWidget {
   }
 }
 
-class CreateView extends StatelessWidget {
+class CreateViewFiles extends StatelessWidget {
   final String name;
 
   final camera;
 
-  const CreateView({Key? key, required this.name, this.camera}) : super(key: key);
+  const CreateViewFiles({Key? key, required this.name, this.camera}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text('A new view is created!'),
+      ),
+    );
+  }
+}
+
+class CreateViewPhoto extends StatelessWidget {
+  final String name;
+
+  final camera;
+
+  const CreateViewPhoto({Key? key, required this.name, this.camera}) : super(key: key);
 
 
   @override
