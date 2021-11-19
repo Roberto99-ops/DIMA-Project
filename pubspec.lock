@@ -111,6 +111,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_mobile_vision_2:
+    dependency: "direct main"
+    description:
+      name: flutter_mobile_vision_2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.13"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
