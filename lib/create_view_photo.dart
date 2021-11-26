@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photocamera_app_test/manage_files.dart';
 import 'package:simple_ocr_plugin/simple_ocr_plugin.dart';
 
-import 'gallery_ocr.dart';
+import 'ocr.dart';
 
 class CreateViewPhoto extends StatelessWidget {
   final String name;
@@ -147,17 +148,27 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // Attempt to take a picture and get the file `image`
       // where it was saved.
       final image = await _cameraController.takePicture();
+      //putInGallery(image.name);
 
       // If the picture was taken, display it on a new screen.
+
+      File _pickedImage = File(image.path);
+      bool _scanning=false;
+      late String _extractText;
+      setState(() {
+        _scanning = true;
+      });
+      _extractText =
+      await SimpleOcrPlugin.performOCR(_pickedImage.path, delimiter: "\n");
+      setState(() {
+        _scanning = false;
+      });
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => DisplayPictureScreen(
-            // Pass the automatically generated path to
-            // the DisplayPictureScreen widget.
-            imagePath: image.path,
-          ),
+          builder: (context) => DisplayImageOCR(extractText: _extractText, pickedImage: _pickedImage,),
         ),
       );
+
     } catch (e) {
       // If an error occurs, log the error to the console.
       print(e);
@@ -165,21 +176,3 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 }
 
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key? key, required this.imagePath})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
-  }
-}
