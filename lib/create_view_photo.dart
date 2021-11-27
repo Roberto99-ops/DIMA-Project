@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photocamera_app_test/manage_files.dart';
 import 'package:simple_ocr_plugin/simple_ocr_plugin.dart';
@@ -124,17 +125,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     });
     _pickedImage =
     await ImagePicker.pickImage(source: ImageSource.gallery);
+    File? _cropped = await cropImage(_pickedImage);
     _extractText =
-    await SimpleOcrPlugin.performOCR(_pickedImage.path, delimiter: "\n");// sarebbe fatto per salvare il tutto su un file json, boh pensiamoci
+    await SimpleOcrPlugin.performOCR(_cropped!.path, delimiter: "\n");// sarebbe fatto per salvare il tutto su un file json, boh pensiamoci
     setState(() {
       _scanning = false;
     });
 
     await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DisplayImageOCR(extractText: _extractText, pickedImage: _pickedImage,),
-      ),
-    );
+    MaterialPageRoute(
+      builder: (context) => DisplayImageOCR(extractText: _extractText, pickedImage: _cropped,),
+    ),
+  );
   }
 
 
@@ -158,21 +160,54 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       setState(() {
         _scanning = true;
       });
+      File? _cropped = await cropImage(_pickedImage);
       _extractText =
-      await SimpleOcrPlugin.performOCR(_pickedImage.path, delimiter: "\n");
+      await SimpleOcrPlugin.performOCR(_cropped!.path, delimiter: "\n");
       setState(() {
         _scanning = false;
       });
+
+
       await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DisplayImageOCR(extractText: _extractText, pickedImage: _pickedImage,),
-        ),
-      );
+      MaterialPageRoute(
+        builder: (context) => DisplayImageOCR(extractText: _extractText, pickedImage: _cropped,),
+      ),
+    );
 
     } catch (e) {
       // If an error occurs, log the error to the console.
       print(e);
     }
   }
+
+  Future<File?> cropImage(File _pickedImage) async {
+    bool scanning = false;
+    setState(() {
+      scanning = true;
+    });
+    File? cropped = await ImageCropper.cropImage(
+        sourcePath: _pickedImage.path,
+        aspectRatio: CropAspectRatio(
+            ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        maxWidth: 700,
+        maxHeight: 700,
+        compressFormat: ImageCompressFormat.jpg,
+        androidUiSettings: const AndroidUiSettings(
+          toolbarColor: Colors.blue,
+          toolbarTitle: "Crop Image",
+          statusBarColor: Colors.blue,
+          backgroundColor: Colors.white,
+          lockAspectRatio: false,
+        )
+    );
+
+    setState(() {
+      scanning = false;
+    });
+
+    return cropped;
+  }
 }
+
 
