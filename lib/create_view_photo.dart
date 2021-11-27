@@ -128,6 +128,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     File? _cropped = await cropImage(_pickedImage);
     _extractText =
     await SimpleOcrPlugin.performOCR(_cropped!.path, delimiter: "\n");// sarebbe fatto per salvare il tutto su un file json, boh pensiamoci
+    _extractText = stringRefactor(_extractText);
     setState(() {
       _scanning = false;
     });
@@ -163,6 +164,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       File? _cropped = await cropImage(_pickedImage);
       _extractText =
       await SimpleOcrPlugin.performOCR(_cropped!.path, delimiter: "\n");
+      _extractText = stringRefactor(_extractText);
       setState(() {
         _scanning = false;
       });
@@ -180,6 +182,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     }
   }
 
+  //this function allow the user to resize and rotate the image
   Future<File?> cropImage(File _pickedImage) async {
     bool scanning = false;
     setState(() {
@@ -207,6 +210,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     });
 
     return cropped;
+  }
+
+  //this function refactors the text
+  String stringRefactor(String string) {
+    int start = string.indexOf("{")+24;
+    int end = string.lastIndexOf("b")-4;
+    return string.substring(start, end);
   }
 }
 
