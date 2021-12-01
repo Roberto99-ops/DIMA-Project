@@ -32,7 +32,7 @@ class DisplayImageOCR extends StatelessWidget {
                   color: Colors.grey[300],
                   image: DecorationImage(
                     image: FileImage(pickedImage),
-                    fit: BoxFit.fill,
+                    //fit: BoxFit.none,
                   )),
             ),
             TextEditor(doc: extractText, type: String,)

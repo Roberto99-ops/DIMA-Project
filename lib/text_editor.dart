@@ -15,35 +15,55 @@ class TextEditor extends StatefulWidget{
   TextEditor({required this.doc, required this.type});
 
   @override
-  State<StatefulWidget> createState() {
-    return _TextEditor();
-  }
+  _TextEditor createState() => _TextEditor();
 
 }
 
 class _TextEditor extends State<TextEditor>{
 
   late ZefyrController _controller;
+  late bool _readOnly;
 
   @override
   void initState(){
     super.initState();
     final document = loadDocument();
+    _readOnly=true;
     _controller = ZefyrController(document);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return Scaffold(
+        body: Column(
+        children: [
+        if(_readOnly)...[
+          TextButton(
+            onPressed: () {
+              setState((){_readOnly = false;});
+            },
+            child: const Text(
+              "Press to exit the ReadOnly mode", style: TextStyle(
+              //fontSize: 10.0,
+            ),),
+          ),
+        ]
+        else...[
         ZefyrToolbar.basic(controller: _controller),
+        ],
+
         Expanded(
           child: ZefyrEditor(
             controller: _controller,
-            readOnly: false,  //readOnly variable
+            readOnly: _readOnly,  //readOnly variable
           ),
         ),
       ],
+    ),
+
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.archive_sharp),
+          onPressed: (){}),
     );
   }
 
