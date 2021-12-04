@@ -12,7 +12,6 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:photocamera_app_test/boh.dart';
 
 import 'main.dart';
 
