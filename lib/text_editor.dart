@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:photocamera_app_test/save_json_file.dart';
 import 'package:zefyrka/zefyrka.dart';
 import 'package:quill_format/quill_format.dart';
+
+import 'main.dart';
 
 //this class manages the text editor
 //when called it gets a string or a Json file and its type, so it displays it in the editor
@@ -12,7 +16,8 @@ import 'package:quill_format/quill_format.dart';
 class TextEditor extends StatefulWidget{
   final String doc;
   final Type type;
-  TextEditor({required this.doc, required this.type});
+  final File image;
+  TextEditor({required this.doc, required this.type, required this.image});
 
   @override
   _TextEditor createState() => _TextEditor();
@@ -23,6 +28,7 @@ class _TextEditor extends State<TextEditor>{
 
   late ZefyrController _controller;
   late bool _readOnly;
+  bool _save=false;
 
   @override
   void initState(){
@@ -34,7 +40,9 @@ class _TextEditor extends State<TextEditor>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Stack(
+        children: [
+          Scaffold(
         body: Column(
         children: [
         if(_readOnly)...[
@@ -63,7 +71,19 @@ class _TextEditor extends State<TextEditor>{
 
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.archive_sharp),
-          onPressed: (){}),
+          onPressed: () async {
+            /*await Navigator.of(context).push(
+                MaterialPageRoute(
+                builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
+                */
+            setState((){_save=true;});
+          }
+      ),
+    ),
+          if(_save)...[
+            SaveFile(image: widget.image, text: _controller.document.toString())
+          ],
+    ],
     );
   }
 
@@ -80,4 +100,7 @@ class _TextEditor extends State<TextEditor>{
     }
   }
 
+  void setSave(){
+    setState((){_save=false;});
+  }
 }

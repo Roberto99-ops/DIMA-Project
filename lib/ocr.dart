@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photocamera_app_test/text_editor.dart';
-import 'package:quill_delta/quill_delta.dart';
-import 'package:zefyrka/zefyrka.dart';
 
 class DisplayImageOCR extends StatelessWidget {
 
@@ -35,7 +33,7 @@ class DisplayImageOCR extends StatelessWidget {
                     //fit: BoxFit.none,
                   )),
             ),
-            TextEditor(doc: extractText, type: String,)
+            TextEditor(doc: extractText, type: String, image: pickedImage)
           ],),
         ),
       ),
