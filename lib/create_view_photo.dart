@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photocamera_app_test/manage_files.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:simple_ocr_plugin/simple_ocr_plugin.dart';
 
 import 'ocr.dart';

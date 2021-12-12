@@ -1,17 +1,9 @@
-/*to write on a txt
-  File f = new File('F:\\test\\myfile.txt');
-  f.writeAsStringSync('Hello World Dart');
-
-  print(f.readAsStringSync());
-
-  f.deleteSync();
-  */
-
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:photocamera_app_test/save_local_file.dart';
 
 import 'main.dart';
 
@@ -90,6 +82,7 @@ class _SaveFile extends State<SaveFile>{
                   height: 55,
                 child: ElevatedButton(
                   onPressed: () async {
+                    saveFile(titleController.text, widget.text);
                     final cameras = await availableCameras();
                     await Navigator.of(context).push(
                       MaterialPageRoute(
