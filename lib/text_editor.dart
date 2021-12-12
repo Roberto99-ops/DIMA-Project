@@ -81,7 +81,7 @@ class _TextEditor extends State<TextEditor>{
       ),
     ),
           if(_save)...[
-            SaveFile(image: widget.image, text: _controller.document.toString())
+            SaveFile(image: widget.image, text: _controller.document.toString(), photo: widget.image)
           ],
     ],
     );

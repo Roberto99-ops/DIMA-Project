@@ -10,7 +10,8 @@ import 'main.dart';
 class SaveFile extends StatefulWidget{
   final File image;
   final String text;
-  const SaveFile({Key? key, required this.image, required this.text}) : super(key: key);
+  final File photo;
+  const SaveFile({Key? key, required this.image, required this.text, required this.photo}) : super(key: key);
 
 
   @override
@@ -82,7 +83,7 @@ class _SaveFile extends State<SaveFile>{
                   height: 55,
                 child: ElevatedButton(
                   onPressed: () async {
-                    saveFile(titleController.text, widget.text);
+                    saveFile(titleController.text, widget.text, widget.photo);
                     final cameras = await availableCameras();
                     await Navigator.of(context).push(
                       MaterialPageRoute(

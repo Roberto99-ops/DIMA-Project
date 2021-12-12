@@ -7,7 +7,7 @@ import 'package:photocamera_app_test/create_view_files.dart';
 
 
 
-  Future<bool> saveFile(String fileName, String text) async {
+  Future<bool> saveFile(String fileName, String text, File photo) async {
 
     Directory directory;
     try {
@@ -41,10 +41,12 @@ import 'package:photocamera_app_test/create_view_files.dart';
         await directory.create(recursive: true);
       }
       if (await directory.exists()) {
-        File saveFile = File(directory.path + "/$fileName" + ".txt");
-        saveFile.writeAsStringSync(text);
+        File saveTxtFile = File(directory.path + "/$fileName" + ".txt");
+        File saveImgFile = File(directory.path + "/$fileName" + ".png");
+        saveTxtFile.writeAsStringSync(text);
+        saveImgFile.writeAsBytes(photo.readAsBytesSync());
         if (Platform.isIOS) {
-          await ImageGallerySaver.saveFile(saveFile.path,  //qui da cambiare ma ok
+          await ImageGallerySaver.saveFile(saveTxtFile.path,  //qui da cambiare ma ok
               isReturnPathOfIOS: true);
         }
         return true;
