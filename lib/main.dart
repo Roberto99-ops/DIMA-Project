@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +31,7 @@ class TabApp extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            bottom: TabBar(tabs: [
+            bottom: const TabBar(tabs: [
               Tab(child: Icon(Icons.photo_camera)),
               Tab(child: Icon(Icons.link)),
               Tab(child: Icon(Icons.star)),
@@ -41,8 +39,8 @@ class TabApp extends StatelessWidget {
           ),
           body: TabBarView(children: [
             CreateViewPhoto(name: 'Take photos', camera: camera),
-            CreateViewFiles(name: 'Links'),
-            CreateViewFiles(name: 'Favourites'),
+            const CreateViewFiles(name: 'Links'),
+            const CreateViewFiles(name: 'Favourites'),
           ],),
         ),
       ),

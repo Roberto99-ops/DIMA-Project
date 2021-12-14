@@ -1,15 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photocamera_app_test/viewof_save_local_file.dart';
 import 'package:zefyrka/zefyrka.dart';
 import 'package:quill_format/quill_format.dart';
 import 'package:photocamera_app_test/translation.dart';
-
-import 'main.dart';
 
 //this class manages the text editor
 //when called it gets a string or a Json file and its type, so it displays it in the editor

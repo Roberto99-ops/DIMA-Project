@@ -4,7 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:simple_ocr_plugin/simple_ocr_plugin.dart';
 
 import 'ocr.dart';
@@ -100,12 +99,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               children: <Widget>[
                 ElevatedButton(
                     onPressed: () {takePhoto();},
-                    child: Icon(Icons.photo_camera, color: Colors.black)
+                    child: const Icon(Icons.photo_camera, color: Colors.black)
                 ),
 
                 ElevatedButton(
                     onPressed: () { chooseImage();},
-                    child: Icon(Icons.photo, color: Colors.purple)
+                    child: const Icon(Icons.photo, color: Colors.purple)
                 )
               ]
           )
@@ -190,7 +189,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     });
     File? cropped = await ImageCropper.cropImage(
         sourcePath: _pickedImage.path,
-        aspectRatio: CropAspectRatio(
+        aspectRatio: const CropAspectRatio(
             ratioX: 1, ratioY: 1),
         compressQuality: 100,
         maxWidth: 700,
