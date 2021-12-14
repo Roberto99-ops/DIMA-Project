@@ -11,7 +11,6 @@ class DisplayImageOCR extends StatelessWidget {
   DisplayImageOCR({Key? key,required this.pickedImage, required this.extractText})
       : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:photocamera_app_test/viewof_save_local_file.dart';
 import 'package:zefyrka/zefyrka.dart';
 import 'package:quill_format/quill_format.dart';
+import 'package:photocamera_app_test/translation.dart';
 
 import 'main.dart';
 
@@ -14,7 +15,7 @@ import 'main.dart';
 //when called it gets a string or a Json file and its type, so it displays it in the editor
 //so we can modify it. it also starts in the "readOnly" mode that we can change  to improve
 class TextEditor extends StatefulWidget{
-  final String doc;
+  String doc;
   final Type type;
   final File image;
   TextEditor({required this.doc, required this.type, required this.image});
@@ -29,6 +30,7 @@ class _TextEditor extends State<TextEditor>{
   late ZefyrController _controller;
   late bool _readOnly;
   bool _save=false;
+  String text_translated = "";
 
   @override
   void initState(){
@@ -36,6 +38,14 @@ class _TextEditor extends State<TextEditor>{
     final document = loadDocument();
     _readOnly=true;
     _controller = ZefyrController(document);
+  }
+
+  void _translateText(String text){
+    translate(text, 'en').then((translation) =>
+
+        setState(() {
+        text_translated = translation;
+      }));
   }
 
   @override
@@ -46,6 +56,12 @@ class _TextEditor extends State<TextEditor>{
         body: Column(
         children: [
         if(_readOnly)...[
+          Text(text_translated,
+            style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.black),
+          ),
           TextButton(
             onPressed: () {
               setState((){_readOnly = false;});
@@ -55,6 +71,12 @@ class _TextEditor extends State<TextEditor>{
               //fontSize: 10.0,
             ),),
           ),
+          TextButton(
+            onPressed: () {_translateText(widget.doc);},
+            child: const Text(
+              "Press to translate in english", style: TextStyle(),
+            ),
+          )
         ]
         else...[
         ZefyrToolbar.basic(controller: _controller),
