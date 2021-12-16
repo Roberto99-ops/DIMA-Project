@@ -7,6 +7,7 @@ import 'package:photocamera_app_test/viewof_save_local_file.dart';
 import 'package:zefyrka/zefyrka.dart';
 import 'package:quill_format/quill_format.dart';
 import 'package:photocamera_app_test/translation.dart';
+import 'package:photocamera_app_test/view_of_languages.dart';
 
 //this class manages the text editor
 //when called it gets a string or a Json file and its type, so it displays it in the editor
@@ -15,7 +16,7 @@ class TextEditor extends StatefulWidget{
   String doc;
   final Type type;
   final File image;
-  TextEditor({required this.doc, required this.type, required this.image});
+  TextEditor({Key? key, required this.doc, required this.type, required this.image}) : super(key: key);
 
   @override
   _TextEditor createState() => _TextEditor();
@@ -53,52 +54,75 @@ class _TextEditor extends State<TextEditor>{
         body: Column(
         children: [
         if(_readOnly)...[
-          Text(text_translated,
-            style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.black),
-          ),
-          TextButton(
-            onPressed: () {
-              setState((){_readOnly = false;});
-            },
-            child: const Text(
-              "Press to exit the ReadOnly mode", style: TextStyle(
-              //fontSize: 10.0,
-            ),),
-          ),
-          TextButton(
-            onPressed: () {_translateText(widget.doc);},
-            child: const Text(
-              "Press to translate in english", style: TextStyle(),
-            ),
-          )
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 5, // 50%
+                child: TextButton(
+                  onPressed: () {
+                    setState((){_readOnly = false;});
+                  },
+                  child: const Text(
+                    "Press to exit the ReadOnly mode", style: TextStyle(
+                    //fontSize: 10.0,
+                  ),),
+                ),
+              ),
+              Expanded(
+                flex: 5, // 50%
+                child: TextButton(
+                  onPressed: () {_translateText(widget.doc);},
+                  child: const Text(
+                    "Press to translate in english", style: TextStyle(),
+                  ),
+                ),
+              )
+            ],
+          )	,
         ]
         else...[
         ZefyrToolbar.basic(controller: _controller),
         ],
-
         Expanded(
+          flex: 3,
           child: ZefyrEditor(
             controller: _controller,
             readOnly: _readOnly,  //readOnly variable
           ),
         ),
+        /*const Expanded(
+          flex: 4,
+          child:
+            SizedBox()
+        ),*/
+        Expanded(
+          flex: 5,
+          child:
+            Text(text_translated,
+              style: const TextStyle(
+                  fontSize: 20,
+                  color: Color(0xFF007ADC)),
+            ),
+        ),
+        const Expanded(
+          flex: 2,
+          child:
+            SettingsWidgetLanguage(),
+        ),
       ],
     ),
 
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.archive_sharp),
-          onPressed: () async {
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.archive_sharp),
+            onPressed: () async {
             /*await Navigator.of(context).push(
                 MaterialPageRoute(
                 builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
                 */
-            setState((){_save=true;});
-          }
+              setState((){_save=true;});
+            }
+        ),
       ),
-    ),
           if(_save)...[
             SaveFile(image: widget.image, text: _controller.document.toString(), photo: widget.image)
           ],

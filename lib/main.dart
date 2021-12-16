@@ -20,7 +20,7 @@ Future<void> main() async{
 
 class TabApp extends StatelessWidget {
   final camera;
-  TabApp({Key? key, required this.camera}) : super(key: key);
+  const TabApp({Key? key, required this.camera}) : super(key: key);
 
 
   // This widget is the root of the application.
