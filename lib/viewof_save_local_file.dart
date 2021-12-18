@@ -8,10 +8,9 @@ import 'package:photocamera_app_test/manage_files.dart';
 import 'main.dart';
 
 class SaveFile extends StatefulWidget{
-  final File image;
   final String text;
   final File photo;
-  const SaveFile({Key? key, required this.image, required this.text, required this.photo}) : super(key: key);
+  const SaveFile({Key? key, required this.text, required this.photo}) : super(key: key);
 
 
   @override
@@ -19,7 +18,7 @@ class SaveFile extends StatefulWidget{
 }
 
 class _SaveFile extends State<SaveFile>{
-  bool activated = true;
+  bool isReadOnly = true;
   final titleController = TextEditingController();
 
   @override
@@ -51,8 +50,8 @@ class _SaveFile extends State<SaveFile>{
               controller: titleController,
               enableSuggestions: false,
               autocorrect: false,
-              readOnly: activated,
-              onTap: (){setState(() {activated=false;});},
+              readOnly: isReadOnly,
+              onTap: (){setState(() {isReadOnly=false;});},
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -68,7 +67,7 @@ class _SaveFile extends State<SaveFile>{
                   width: 120,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: () {setState(() {activated=true;});},
+                  onPressed: () {setState(() {isReadOnly=true;});},
                   child: const Text("delete"),
                   style: const ButtonStyle(
                    // minimumSize: MaterialStateProperty.,

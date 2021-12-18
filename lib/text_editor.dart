@@ -29,6 +29,7 @@ class _TextEditor extends State<TextEditor>{
   late bool _readOnly;
   bool _save=false;
   String text_translated = "";
+  String? _selectedLanguage;
 
   @override
   void initState(){
@@ -39,7 +40,7 @@ class _TextEditor extends State<TextEditor>{
   }
 
   void _translateText(String text){
-    translate(text, 'en').then((translation) =>
+    translate(text, _selectedLanguage!).then((translation) =>
 
         setState(() {
         text_translated = translation;
@@ -51,80 +52,84 @@ class _TextEditor extends State<TextEditor>{
     return Stack(
         children: [
           Scaffold(
-        body: Column(
-        children: [
-        if(_readOnly)...[
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 5, // 50%
-                child: TextButton(
-                  onPressed: () {
-                    setState((){_readOnly = false;});
-                  },
-                  child: const Text(
-                    "Press to exit the ReadOnly mode", style: TextStyle(
-                    //fontSize: 10.0,
-                  ),),
-                ),
+            body: Column(
+            children: [
+            if(_readOnly)...[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5, // 50%
+                    child: TextButton(
+                      onPressed: () {
+                        setState((){_readOnly = false;});
+                      },
+                      child: const Text(
+                        "Press to exit the ReadOnly mode", style: TextStyle(
+                        //fontSize: 10.0,
+                      ),),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5, // 50%
+                    child: TextButton(
+                      onPressed: () {_translateText(widget.doc);},
+                      child: const Text(
+                        "Press to translate", style: TextStyle(),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                flex: 5, // 50%
-                child: TextButton(
-                  onPressed: () {_translateText(widget.doc);},
-                  child: const Text(
-                    "Press to translate in english", style: TextStyle(),
+            ]
+            else...[
+            ZefyrToolbar.basic(controller: _controller),
+            ],
+            Expanded(
+              flex: 3,
+              child: ZefyrEditor(
+                controller: _controller,
+                readOnly: _readOnly,  //readOnly variable
+              ),
+            ),
+            /*const Expanded(
+              flex: 4,
+              child:
+                SizedBox()
+            ),*/
+            Expanded(
+              flex: 5,
+              child:
+                Text(text_translated,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF007ADC)),
+                ),
+            ),
+            Expanded(
+              flex: 2,
+              child:
+                SettingsWidgetLanguage(
+                    onChanged: (_currentLanguage) {
+                      _selectedLanguage = _currentLanguage;
+                    }
                   ),
                 ),
-              )
-            ],
-          )	,
-        ]
-        else...[
-        ZefyrToolbar.basic(controller: _controller),
-        ],
-        Expanded(
-          flex: 3,
-          child: ZefyrEditor(
-            controller: _controller,
-            readOnly: _readOnly,  //readOnly variable
-          ),
-        ),
-        /*const Expanded(
-          flex: 4,
-          child:
-            SizedBox()
-        ),*/
-        Expanded(
-          flex: 5,
-          child:
-            Text(text_translated,
-              style: const TextStyle(
-                  fontSize: 20,
-                  color: Color(0xFF007ADC)),
+              ],
             ),
-        ),
-        const Expanded(
-          flex: 2,
-          child:
-            SettingsWidgetLanguage(),
-        ),
-      ],
-    ),
 
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.archive_sharp),
-            onPressed: () async {
-            /*await Navigator.of(context).push(
-                MaterialPageRoute(
-                builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
-                */
-              setState((){_save=true;});
-            }
-        ),
-      ),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.archive_sharp),
+                onPressed: () async {
+                /*await Navigator.of(context).push(
+                    MaterialPageRoute(
+                    builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
+                    */
+                  setState((){_save=true;});
+                }
+            ),
+          ),
           if(_save)...[
-            SaveFile(image: widget.image, text: _controller.document.toString(), photo: widget.image)
+            SaveFile(text: _controller.document.toString(), photo: widget.image)
           ],
     ],
     );
