@@ -68,3 +68,10 @@ import 'package:permission_handler/permission_handler.dart';
     return false;
   }
 
+  Future<void> deleteFile(String fileName) async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    File TxtFile = File(directory.path + "/$fileName" + ".txt");
+    File ImgFile = File(directory.path + "/$fileName" + ".png");
+    TxtFile.deleteSync();
+    ImgFile.deleteSync();
+  }

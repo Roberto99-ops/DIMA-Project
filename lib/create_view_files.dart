@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:photocamera_app_test/manage_files.dart';
 
 import 'ocr.dart';
 
@@ -32,24 +34,68 @@ class _View extends State<CreateViewFiles>{
 
   @override
   Widget build(BuildContext context) {
-
     return ListView.builder(
-      itemCount: files.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(files.elementAt(index)),
-          onTap: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(
-                  builder: (context) => DisplayImageOCR(extractText: getText(files.elementAt(index)), pickedImage: getPhoto(files.elementAt(index))),
-                  ),
-                  ),
-          //onLongPress: , qui esce opzione condividi, cancella ecc
-        );
-      },
+        itemCount: files.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(files.elementAt(index)),
+            onTap: () async =>
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    DisplayImageOCR(
+                        extractText: getText(files.elementAt(index)),
+                        pickedImage: getPhoto(files.elementAt(index))),
+              ),
+            ),
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SimpleDialog(
+                      children: <Widget>[
+                        SimpleDialogOption(
+                          onPressed: () {
+                              deleteFile(files[index]);
+                              updateFiles();
+                              Navigator.of(context).pop();
+                          },
+                          child: Row(
+                            children:const [
+                              Icon(Icons.delete, color: Colors.red),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text('delete', style: TextStyle(color: Colors.black),),
+                            ]
+                          ),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {
+                            //Navigator.pop(context, Department.state);
+                          },
+                          child: Row(
+                              children:const [
+                                Icon(Icons.share, color: Colors.blue,),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('share', style: TextStyle(color: Colors.black),),
+                              ]
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+              );
+            },
+          );
+        }
     );
   }
 
 
+  //this function scan the directory to make a list of the txt files
   updateFiles() async {
     List<String> names = List.filled(0, "", growable: true);
     List<FileSystemEntity> list;
@@ -86,3 +132,5 @@ class _View extends State<CreateViewFiles>{
   }
 
 }
+
+
