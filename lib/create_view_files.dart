@@ -49,10 +49,40 @@ class _View extends State<CreateViewFiles>{
               ),
             ),
             onLongPress: () {
-              showDialog(
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context){
+                    return Container(
+                      height: 120,
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: const Icon(Icons.delete, color: Colors.red),
+                            title: const Text('delete'),
+                            onTap: () {
+                              deleteFile(files[index]);
+                              updateFiles();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.share, color: Colors.blue),
+                            title: const Text('share'),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ]
+                      )
+                    );
+                }
+              );
+              /*showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return SimpleDialog(
+                      contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      insetPadding: const EdgeInsets.symmetric(horizontal: 115, vertical: 24),
                       children: <Widget>[
                         SimpleDialogOption(
                           onPressed: () {
@@ -87,8 +117,8 @@ class _View extends State<CreateViewFiles>{
                       ],
                     );
                   }
-              );
-            },
+              );*/
+            }
           );
         }
     );
