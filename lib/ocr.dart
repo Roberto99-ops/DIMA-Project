@@ -32,7 +32,7 @@ class DisplayImageOCR extends StatelessWidget {
                     //fit: BoxFit.none,
                   )),
             ),
-            TextEditor(doc: extractText, type: String, image: pickedImage)
+            TextEditor(doc: extractText, image: pickedImage)
           ],),
         ),
       ),

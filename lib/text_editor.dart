@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photocamera_app_test/viewof_save_local_file.dart';
@@ -9,14 +10,14 @@ import 'package:quill_format/quill_format.dart';
 import 'package:photocamera_app_test/translation.dart';
 import 'package:photocamera_app_test/view_of_languages.dart';
 
-//this class manages the text editor
-//when called it gets a string or a Json file and its type, so it displays it in the editor
-//so we can modify it. it also starts in the "readOnly" mode that we can change  to improve
+import 'main.dart';
+import 'manage_files.dart';
+
+
 class TextEditor extends StatefulWidget{
   String doc;
-  final Type type;
   final File image;
-  TextEditor({Key? key, required this.doc, required this.type, required this.image}) : super(key: key);
+  TextEditor({Key? key, required this.doc, required this.image}) : super(key: key);
 
   @override
   _TextEditor createState() => _TextEditor();
@@ -119,12 +120,23 @@ class _TextEditor extends State<TextEditor>{
                 MaterialPageRoute(
                 builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
                 */
-              setState((){_save=true;});
+              if(getfileName()!="") {
+                saveFile(getfileName(), _controller.document.toString(), widget.image);
+                setfileName("");
+                final cameras = await availableCameras();
+                await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TabApp(camera: cameras.first,), //qui mi sa che è sbagliato nel senso che penso di dover fare la "back"
+                    )
+                );
+              }
+              else
+              setState(() {_save=true;});
             }
         ),
       ),
           if(_save)...[
-            SaveFile(image: widget.image, text: _controller.document.toString(), photo: widget.image)
+              ViewSaveFile(text: _controller.document.toString(), photo: widget.image)
           ],
     ],
     );
@@ -132,14 +144,16 @@ class _TextEditor extends State<TextEditor>{
 
   //this function provide a document readable from the Zefyr library
   NotusDocument loadDocument(){
-    if(widget.type==String){
       Delta delta = Delta()..insert(widget.doc);
       delta = delta.concat(Delta()..insert('\n'));  //it always has to end with a newline
       return NotusDocument.fromDelta(delta);
   }
-    else{
-      List data = json.decode(widget.doc);
-      return NotusDocument.fromJson(data);   //not tested
-    }
-  }
+}
+
+String fileName = ""; //this variable is used to know if the variable is already been saved
+void setfileName(String name){
+  fileName = name;
+}
+String getfileName(){
+  return fileName;
 }

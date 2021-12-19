@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photocamera_app_test/manage_files.dart';
+import 'package:photocamera_app_test/text_editor.dart';
 
 import 'ocr.dart';
 
@@ -40,14 +42,17 @@ class _View extends State<CreateViewFiles>{
           return ListTile(
             title: Text(files.elementAt(index)),
             onTap: () async =>
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) =>
-                    DisplayImageOCR(
-                        extractText: getText(files.elementAt(index)),
-                        pickedImage: getPhoto(files.elementAt(index))),
+            {
+              setfileName(files.elementAt(index)),
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DisplayImageOCR(
+                          extractText: getText(files.elementAt(index)),
+                          pickedImage: getPhoto(files.elementAt(index))),
+                ),
               ),
-            ),
+            },
             onLongPress: () {
               showModalBottomSheet(
                   context: context,
@@ -152,7 +157,17 @@ class _View extends State<CreateViewFiles>{
     String path = directory.path;
     File file = File("$path/$name.txt");
     String content = file.readAsStringSync();
-    return content;
+    String finalString = "";
+    List<String> strings = content.split('\n');                    //parsing
+    for(int i=0; i<strings.length; i++) {
+      String string = strings[i];
+      int start = 3;
+      int end = string.length - 3;
+      string = string.substring(start, end);
+      if(i!=strings.length-1) string = string + '\n';
+      finalString = finalString + string;
+    }
+    return finalString;
   }
 
   File getPhoto(String name){

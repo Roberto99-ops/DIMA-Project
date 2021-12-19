@@ -7,18 +7,17 @@ import 'package:photocamera_app_test/manage_files.dart';
 
 import 'main.dart';
 
-class SaveFile extends StatefulWidget{
-  final File image;
+class ViewSaveFile extends StatefulWidget{
   final String text;
   final File photo;
-  const SaveFile({Key? key, required this.image, required this.text, required this.photo}) : super(key: key);
+  const ViewSaveFile({Key? key, required this.text, required this.photo}) : super(key: key);
 
 
   @override
-  _SaveFile createState() => _SaveFile();
+  _ViewSaveFile createState() => _ViewSaveFile();
 }
 
-class _SaveFile extends State<SaveFile>{
+class _ViewSaveFile extends State<ViewSaveFile>{
   bool activated = true;
   final titleController = TextEditingController();
 

@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photocamera_app_test/text_editor.dart';
 import 'package:simple_ocr_plugin/simple_ocr_plugin.dart';
 
 import 'ocr.dart';
@@ -98,12 +99,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
-                    onPressed: () {takePhoto();},
+                    onPressed: () {
+                      setfileName("");
+                      takePhoto();
+                      },
                     child: const Icon(Icons.photo_camera, color: Colors.black)
                 ),
 
                 ElevatedButton(
-                    onPressed: () { chooseImage();},
+                    onPressed: () {
+                      setfileName("");
+                      chooseImage();
+                      },
                     child: const Icon(Icons.photo, color: Colors.purple)
                 )
               ]
