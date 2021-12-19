@@ -18,7 +18,7 @@ class ViewSaveFile extends StatefulWidget{
 }
 
 class _ViewSaveFile extends State<ViewSaveFile>{
-  bool activated = true;
+  bool isReadOnly = true;
   final titleController = TextEditingController();
 
   @override
