@@ -29,7 +29,7 @@ class _TextEditor extends State<TextEditor>{
   late ZefyrController _controller;
   late bool _readOnly;
   bool _save=false;
-  String text_translated = "";
+  String textTranslated = "";
   String? _selectedLanguage;
 
   @override
@@ -44,7 +44,7 @@ class _TextEditor extends State<TextEditor>{
     translate(text, _selectedLanguage!).then((translation) =>
 
         setState(() {
-        text_translated = translation;
+        textTranslated = translation;
       }));
   }
 
@@ -92,15 +92,10 @@ class _TextEditor extends State<TextEditor>{
                 readOnly: _readOnly,  //readOnly variable
               ),
             ),
-            /*const Expanded(
-              flex: 4,
-              child:
-                SizedBox()
-            ),*/
             Expanded(
               flex: 5,
               child:
-                Text(text_translated,
+                Text(textTranslated,
                   style: const TextStyle(
                       fontSize: 20,
                       color: Color(0xFF007ADC)),
@@ -125,9 +120,9 @@ class _TextEditor extends State<TextEditor>{
                 MaterialPageRoute(
                 builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
                 */
-              if(getfileName()!="") {
-                saveFile(getfileName(), _controller.document.toString(), widget.image);
-                setfileName("");
+              if(getFileName()!="") {
+                saveFile(getFileName(), _controller.document.toString(), widget.image);
+                setFileName("");
                 final cameras = await availableCameras();
                 await Navigator.of(context).push(
                     MaterialPageRoute(
@@ -135,8 +130,9 @@ class _TextEditor extends State<TextEditor>{
                     )
                 );
               }
-              else
-              setState(() {_save=true;});
+              else {
+                setState(() {_save=true;});
+              }
             }
         ),
       ),
@@ -156,9 +152,9 @@ class _TextEditor extends State<TextEditor>{
 }
 
 String fileName = ""; //this variable is used to know if the variable is already been saved
-void setfileName(String name){
+void setFileName(String name){
   fileName = name;
 }
-String getfileName(){
+String getFileName(){
   return fileName;
 }

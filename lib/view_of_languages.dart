@@ -12,29 +12,19 @@ class SettingsWidgetLanguage extends StatefulWidget {
 
 class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
 
-  final List _languages =
-  ["en", "it", "fr", "es", "ru"];
+  static const Map<String, String> _languages = {
+    "Deutsch": "de",
+    "English": "en",
+    "Español":"es",
+    "Français": "fr",
+    "Hindi": "hi",
+    "Italiano": "it",
+    "русский": "ru",
+    "Urdu": "ur",
+    "中国人": "zh-cn",
+  };
 
-  late List<DropdownMenuItem<String>> _dropDownMenuItems;
   String? _currentLanguage;
-
-  @override
-  void initState() {
-    _dropDownMenuItems = getDropDownMenuItems();
-    _currentLanguage = _dropDownMenuItems[0].value!;
-    super.initState();
-  }
-
-  List<DropdownMenuItem<String>> getDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = [];
-    for (String language in _languages) {
-      items.add(DropdownMenuItem(
-          value: language,
-          child: Text(language)
-      ));
-    }
-    return items;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +51,23 @@ class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
                       child:
                       DropdownButton<String>(
                         value: _currentLanguage,
-                        items: _dropDownMenuItems,
+                        items: _languages
+                            .map((string, value) {
+                              return MapEntry(
+                                string,
+                                DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(string),
+                                ),
+                              );
+                            })
+                            .values
+                            .toList(),
+
+
                         onChanged: (_currentLanguage) => {
                           setState(() {
-                            this._currentLanguage = _currentLanguage;
+                            this._currentLanguage = _currentLanguage!;
                           }),
                           widget.onChanged(_currentLanguage!),
                         },

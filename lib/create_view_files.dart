@@ -44,7 +44,7 @@ class _View extends State<CreateViewFiles>{
             title: Text(files.elementAt(index)),
             onTap: () async =>
             {
-              setfileName(files.elementAt(index)),
+              setFileName(files.elementAt(index)),
               await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>

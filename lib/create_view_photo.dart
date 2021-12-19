@@ -100,7 +100,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               children: <Widget>[
                 ElevatedButton(
                     onPressed: () {
-                      setfileName("");
+                      setFileName("");
                       takePhoto();
                       },
                     child: const Icon(Icons.photo_camera, color: Colors.black)
@@ -108,7 +108,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
                 ElevatedButton(
                     onPressed: () {
-                      setfileName("");
+                      setFileName("");
                       chooseImage();
                       },
                     child: const Icon(Icons.photo, color: Colors.purple)
