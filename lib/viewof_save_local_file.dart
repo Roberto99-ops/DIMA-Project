@@ -50,8 +50,8 @@ class _ViewSaveFile extends State<ViewSaveFile>{
               controller: titleController,
               enableSuggestions: false,
               autocorrect: false,
-              readOnly: activated,
-              onTap: (){setState(() {activated=false;});},
+              readOnly: isReadOnly,
+              onTap: (){setState(() {isReadOnly=false;});},
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -67,7 +67,7 @@ class _ViewSaveFile extends State<ViewSaveFile>{
                   width: 120,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: () {setState(() {activated=true;});},
+                  onPressed: () {setState(() {isReadOnly=true;});},
                   child: const Text("delete"),
                   style: const ButtonStyle(
                    // minimumSize: MaterialStateProperty.,

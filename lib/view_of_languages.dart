@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 
 class SettingsWidgetLanguage extends StatefulWidget {
-  const SettingsWidgetLanguage({Key? key}) : super(key: key);
+  final ValueChanged<String> onChanged;
+
+  const SettingsWidgetLanguage({Key? key, required this.onChanged}) : super(key: key);
 
   @override
   _SettingsWidgetLanguageState createState() => _SettingsWidgetLanguageState();
@@ -60,9 +62,12 @@ class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
                       DropdownButton<String>(
                         value: _currentLanguage,
                         items: _dropDownMenuItems,
-                        onChanged: (_currentLanguage) => setState(() {
-                          this._currentLanguage = _currentLanguage;
-                        }),
+                        onChanged: (_currentLanguage) => {
+                          setState(() {
+                            this._currentLanguage = _currentLanguage;
+                          }),
+                          widget.onChanged(_currentLanguage!),
+                        },
                       ),
                     ),
                   ),
@@ -73,11 +78,4 @@ class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
       ),
     );
   }
-
-  void changedDropDownItem(String selectedLanguage) {
-    setState(() {
-      _currentLanguage = selectedLanguage;
-    });
-  }
-
 }

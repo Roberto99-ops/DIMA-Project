@@ -30,6 +30,7 @@ class _View extends State<CreateViewFiles>{
 
   @override
   void initState(){
+    //super.initState(); per togliere il warning
     files = List.filled(0, "", growable: true);
     updateFiles();
   }
