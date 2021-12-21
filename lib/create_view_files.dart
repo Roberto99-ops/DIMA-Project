@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photocamera_app_test/manage_files.dart';
 import 'package:photocamera_app_test/text_editor.dart';
+import 'package:share/share.dart';
 
 import 'ocr.dart';
 
@@ -75,7 +76,11 @@ class _View extends State<CreateViewFiles>{
                             leading: const Icon(Icons.share, color: Colors.blue),
                             title: const Text('share'),
                             onTap: () {
-                              Navigator.of(context).pop();
+                              List <String> dir = List.empty(growable: true);
+                              dir.length = 1;
+                              dir[0] = directory.path + "/" + files[index] + ".txt";
+                              Share.shareFiles(dir);
+                              //Navigator.of(context).pop();
                             },
                           )
                         ]
