@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -16,8 +15,8 @@ import 'manage_files.dart';
 
 class TextEditor extends StatefulWidget{
   String doc;
-  final File image;
-  TextEditor({Key? key, required this.doc, required this.image}) : super(key: key);
+  final File? image;
+  TextEditor({Key? key, required this.doc, this.image}) : super(key: key);
 
   @override
   _TextEditor createState() => _TextEditor();
@@ -28,24 +27,14 @@ class _TextEditor extends State<TextEditor>{
 
   late ZefyrController _controller;
   late bool _readOnly;
-  bool _save=false;
-  String textTranslated = "";
-  String? _selectedLanguage;
+  bool _save = false;
 
   @override
   void initState(){
     super.initState();
     final document = loadDocument();
-    _readOnly=true;
+    _readOnly = true;
     _controller = ZefyrController(document);
-  }
-
-  void _translateText(String text){
-    translate(text, _selectedLanguage!).then((translation) =>
-
-        setState(() {
-        textTranslated = translation;
-      }));
   }
 
   @override
@@ -59,7 +48,6 @@ class _TextEditor extends State<TextEditor>{
               Row(
                 children: <Widget>[
                   Expanded(
-                    flex: 5, // 50%
                     child: TextButton(
                       onPressed: () {
                         setState((){_readOnly = false;});
@@ -67,51 +55,24 @@ class _TextEditor extends State<TextEditor>{
                       child: const Text(
                         "Press to exit the ReadOnly mode", style: TextStyle(
                         //fontSize: 10.0,
-                      ),),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5, // 50%
-                    child: TextButton(
-                      onPressed: () {_translateText(widget.doc);},
-                      child: const Text(
-                        "Press to translate", style: TextStyle(),
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ]
             else...[
-            ZefyrToolbar.basic(controller: _controller),
+              ZefyrToolbar.basic(controller: _controller),
             ],
-            Expanded(
-              flex: 3,
-              child: ZefyrEditor(
-                controller: _controller,
-                readOnly: _readOnly,  //readOnly variable
+              Expanded(
+                child: ZefyrEditor(
+                  controller: _controller,
+                  readOnly: _readOnly,  //readOnly variable
+                ),
               ),
-            ),
-            Expanded(
-              flex: 5,
-              child:
-                Text(textTranslated,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Color(0xFF007ADC)),
-                ),
-            ),
-            Expanded(
-              flex: 2,
-              child:
-                SettingsWidgetLanguage(
-                    onChanged: (_currentLanguage) {
-                      _selectedLanguage = _currentLanguage;
-                    }
-                  ),
-                ),
-              ],
-            ),
+            ],
+          ),
 
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.archive_sharp),
@@ -121,7 +82,7 @@ class _TextEditor extends State<TextEditor>{
                 builder: (context) => SaveFile(image: widget.image, text: _controller.document.toString())));
                 */
               if(getFileName()!="") {
-                saveFile(getFileName(), _controller.document.toString(), widget.image);
+                saveFile(getFileName(), _controller.document.toString(), widget.image!);
                 setFileName("");
                 final cameras = await availableCameras();
                 await Navigator.of(context).push(
@@ -131,13 +92,13 @@ class _TextEditor extends State<TextEditor>{
                 );
               }
               else {
-                setState(() {_save=true;});
+                setState(() {_save = true;});
               }
             }
-        ),
-      ),
+           ),
+          ),
           if(_save)...[
-              ViewSaveFile(text: _controller.document.toString(), photo: widget.image)
+              ViewSaveFile(text: _controller.document.toString(), photo: widget.image!)
           ],
     ],
     );
