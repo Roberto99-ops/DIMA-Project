@@ -31,7 +31,7 @@ class _View extends State<CreateViewFiles>{
 
   @override
   void initState(){
-    //super.initState(); per togliere il warning
+    //super.initState(); to remove the warning
     files = List.filled(0, "", growable: true);
     favouriteFiles = List.filled(0, "", growable: true);
     updateFiles();

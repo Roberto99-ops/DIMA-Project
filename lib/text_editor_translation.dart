@@ -1,17 +1,11 @@
 import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:photocamera_app_test/viewof_save_local_file.dart';
 import 'package:zefyrka/zefyrka.dart';
 import 'package:quill_format/quill_format.dart';
 import 'package:photocamera_app_test/translation.dart';
 import 'package:photocamera_app_test/view_of_languages.dart';
-
-import 'main.dart';
-import 'manage_files.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 class TextEditorTranslation extends StatefulWidget{
@@ -31,12 +25,14 @@ class _TextEditorTranslation extends State<TextEditorTranslation>{
   String textTranslated = "";
   String? _selectedLanguage;
   late bool _isChanged;
+  late bool _isLoading;
 
   @override
   void initState(){
     super.initState();
     _readOnly = true;
     _isChanged = false;
+    _isLoading = false;
     var document = loadDocument(textTranslated);
     _controller = ZefyrController(document);
   }
@@ -45,6 +41,7 @@ class _TextEditorTranslation extends State<TextEditorTranslation>{
     translate(text, _selectedLanguage!).then((translation) =>
 
         setState(() {
+          _isLoading = false;
           textTranslated = translation;
         }));
   }
@@ -53,45 +50,37 @@ class _TextEditorTranslation extends State<TextEditorTranslation>{
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Scaffold(
-          body: Column(
-            children: [
-              if(_readOnly)...[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 5, // 50%
-                      child: TextButton(
-                        onPressed: () {
-                          setState((){
-                            _controller = ZefyrController(loadDocument(textTranslated));
-                            _readOnly = false;
-                            _isChanged = false;
-                          });
-                        },
-                        child: const Text(
-                          "Press to exit the ReadOnly mode", style: TextStyle(
-                          //fontSize: 10.0,
+        if(!_isLoading)...[
+          Scaffold(
+            body: Column(
+              children: [
+                if(_readOnly)...[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 5, // 50%
+                        child: TextButton(
+                          onPressed: () {
+                            setState((){
+                              _controller = ZefyrController(loadDocument(textTranslated));
+                              _readOnly = false;
+                              _isChanged = false;
+                            });
+                          },
+                          child: const Text(
+                            "Press to exit the ReadOnly mode", style: TextStyle(
+                            //fontSize: 10.0,
+                          ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ]
-              else...[
-                ZefyrToolbar.basic(controller: _controller),
-              ],
-              Expanded(
-                child: ZefyrEditor(
-                  controller: _controller,
-                  readOnly: _readOnly,  //readOnly variable
-                ),
-              ),
-              Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+                    ],
+                  ),
+                ]
+                else...[
+                  ZefyrToolbar.basic(controller: _controller),
+                ],
+
                 if(_isChanged)...[
                   Center(
                     child:
@@ -100,24 +89,47 @@ class _TextEditorTranslation extends State<TextEditorTranslation>{
                     ),
                   ),
                 ],
+
+                Expanded(
+                  child: ZefyrEditor(
+                    controller: _controller,
+                    readOnly: _readOnly,  //readOnly variable
+                  ),
+                ),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SettingsWidgetLanguage(
                         onChanged: (_currentLanguage) {
-                          _isChanged = true;
+                          setState(() {
+                            _isLoading = true;
+                          });
+
                           _selectedLanguage = _currentLanguage;
                           _translateText(widget.doc);
+
+                          setState(() {
+                            _isChanged = true;
+                          });
                         }
                     ),
                   ],
                 ),
-               ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ]
+        else...[
+          const Center(
+              child:
+              SpinKitCircle(
+                color: Colors.white,
+                size: 50.0,
+              )
+          ),
+        ],
       ],
     );
   }

@@ -29,7 +29,7 @@ class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.black26,
       child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,15 +41,21 @@ class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
               Row(
                 children: [
                   const Expanded(
-                    flex: 1,
+                    flex: 5,
+                    child: Center(),
+                  ),
+                  const Expanded(
+                    flex: 55,
                     child: Text("Please choose your language: "),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 40,
                     child:
                     Center(
                       child:
                       DropdownButton<String>(
+                        borderRadius: BorderRadius.circular(20.0),
+                        dropdownColor: Colors.black45,
                         value: _currentLanguage,
                         items: _languages
                             .map((string, value) {
