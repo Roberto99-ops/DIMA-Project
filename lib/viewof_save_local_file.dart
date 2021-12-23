@@ -29,69 +29,77 @@ class _ViewSaveFile extends State<ViewSaveFile>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black12,
       body: Center(
         child: Container(
-          color: Colors.white,
-        height: 200,
-        width: 300,
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              width: 300,
-              height: 10,
-            ),
-            const Text("Insert the name of the file"),
-            TextField(
-              controller: titleController,
-              enableSuggestions: false,
-              autocorrect: false,
-              readOnly: isReadOnly,
-              onTap: (){setState(() {isReadOnly=false;});},
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+                Radius.circular(15.0)
               ),
-            ),
-            const SizedBox(
-              width: 300,
-              height: 60,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  width: 120,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {setState(() {isReadOnly=true;});},
-                  child: const Text("delete"),
-                  style: const ButtonStyle(
-                   // minimumSize: MaterialStateProperty.,
-                  )
+            color: Colors.black,
+          ),
+          height: 200,
+          width: 300,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                width: 300,
+                height: 10,
+              ),
+              const Text("Insert the name of the file"),
+              SizedBox(
+                width: 280,
+                child: TextField(
+                  controller: titleController,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  readOnly: isReadOnly,
+                  onTap: (){setState(() {isReadOnly=false;});},
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-                ),
-                const SizedBox(
-                  width: 60,
-                ),
-                SizedBox(
-                  width: 120,
+              ),
+              const SizedBox(
+                width: 300,
+                height: 60,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 110,
                   height: 55,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    saveFile(titleController.text, widget.text, widget.photo);
-                    final cameras = await availableCameras();
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => TabApp(camera: cameras.first,), //qui mi sa che è sbagliato nel senso che penso di dover fare la "back"
-                      ),
-                    );
-                  },
-                  child: const Text("save"),
-                ),
+                  child: ElevatedButton(
+                    onPressed: () {setState(() {isReadOnly=true;});},
+                    child: const Text("delete"),
+                    style: const ButtonStyle(
+                      // minimumSize: MaterialStateProperty.,
+                    )
+                  ),
+                  ),
+                  const SizedBox(
+                    width: 60,
+                  ),
+                  SizedBox(
+                    width: 110,
+                    height: 55,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      saveFile(titleController.text, widget.text, widget.photo);
+                      final cameras = await availableCameras();
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TabApp(camera: cameras.first,), //qui mi sa che è sbagliato nel senso che penso di dover fare la "back"
+                        ),
+                      );
+                    },
+                    child: const Text("save"),
+                  ),
                 ),
               ],
             ),
