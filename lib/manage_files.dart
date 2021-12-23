@@ -42,7 +42,19 @@ import 'package:permission_handler/permission_handler.dart';
       if (await directory.exists()) {
         File saveTxtFile = File(directory.path + "/$fileName" + ".txt");
         File saveImgFile = File(directory.path + "/$fileName" + ".png");
-        saveTxtFile.writeAsStringSync(text);
+
+        String finalString = "";                                //parsing
+        List<String> strings = text.split('\n');
+        for(int i=0; i<strings.length; i++) {
+          String string = strings[i];
+          int start = 3;
+          int end = string.length - 3;
+          string = string.substring(start, end);
+          if(i!=strings.length-1) string = string + '\n';
+          finalString = finalString + string;
+        }
+
+        saveTxtFile.writeAsString(finalString);
         saveImgFile.writeAsBytes(photo.readAsBytesSync());
         if (Platform.isIOS) {
           await ImageGallerySaver.saveFile(saveTxtFile.path,  //qui da cambiare ma ok

@@ -80,7 +80,7 @@ class _View extends State<CreateViewFiles>{
                               dir.length = 1;
                               dir[0] = directory.path + "/" + files[index] + ".txt";
                               Share.shareFiles(dir);
-                              //Navigator.of(context).pop();
+                              Navigator.of(context).pop();
                             },
                           )
                         ]
@@ -163,17 +163,7 @@ class _View extends State<CreateViewFiles>{
     String path = directory.path;
     File file = File("$path/$name.txt");
     String content = file.readAsStringSync();
-    String finalString = "";
-    List<String> strings = content.split('\n');                    //parsing
-    for(int i=0; i<strings.length; i++) {
-      String string = strings[i];
-      int start = 3;
-      int end = string.length - 3;
-      string = string.substring(start, end);
-      if(i!=strings.length-1) string = string + '\n';
-      finalString = finalString + string;
-    }
-    return finalString;
+    return content;
   }
 
   File getPhoto(String name){
