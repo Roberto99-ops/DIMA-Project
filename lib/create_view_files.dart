@@ -14,9 +14,8 @@ import 'ocr.dart';
 class CreateViewFiles extends StatefulWidget {
   final String name;
 
-  final camera;
 
-  const CreateViewFiles({Key? key, required this.name, this.camera})
+  const CreateViewFiles({Key? key, required this.name})
       : super(key: key);
 
   @override
@@ -28,11 +27,13 @@ class _View extends State<CreateViewFiles>{
 
   late List<String> files;
   late Directory directory;
+  late List <String> favouriteFiles; //this list contains the name of the user favourite files
 
   @override
   void initState(){
     //super.initState(); per togliere il warning
     files = List.filled(0, "", growable: true);
+    favouriteFiles = List.filled(0, "", growable: true);
     updateFiles();
   }
 
@@ -42,14 +43,19 @@ class _View extends State<CreateViewFiles>{
         itemCount: files.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(files.elementAt(index)),
-            onTap: () async =>
-            {
-              setFileName(files.elementAt(index)),
-              await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      DisplayImageOCR(
+            leading: favourites(files.elementAt(index)),
+              title: Text(
+                  files.elementAt(index),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () async =>
+              {
+                setFileName(files.elementAt(index)),
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DisplayImageOCR(
                           extractText: getText(files.elementAt(index)),
                           pickedImage: getPhoto(files.elementAt(index))),
                 ),
@@ -88,51 +94,38 @@ class _View extends State<CreateViewFiles>{
                     );
                 }
               );
-              /*showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SimpleDialog(
-                      contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      insetPadding: const EdgeInsets.symmetric(horizontal: 115, vertical: 24),
-                      children: <Widget>[
-                        SimpleDialogOption(
-                          onPressed: () {
-                              deleteFile(files[index]);
-                              updateFiles();
-                              Navigator.of(context).pop();
-                          },
-                          child: Row(
-                            children:const [
-                              Icon(Icons.delete, color: Colors.red),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text('delete', style: TextStyle(color: Colors.black),),
-                            ]
-                          ),
-                        ),
-                        SimpleDialogOption(
-                          onPressed: () {
-                            //Navigator.pop(context, Department.state);
-                          },
-                          child: Row(
-                              children:const [
-                                Icon(Icons.share, color: Colors.blue,),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('share', style: TextStyle(color: Colors.black),),
-                              ]
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-              );*/
             }
           );
         }
     );
+  }
+
+  //this function returns the "favourite" widget
+  Widget favourites(String name){
+    if(favouriteFiles.contains(name)) {
+      return IconButton(
+        highlightColor: Colors.blue,
+        splashColor: Colors.blue,
+        icon: const Icon(
+          Icons.star,
+          color: Colors.yellow,
+          size: 20,
+        ),
+        onPressed: () { setState(() { favouriteFiles.remove(name);});},
+      );
+    }
+    else{
+      return IconButton(
+        highlightColor: Colors.yellow,
+        splashColor: Colors.yellow,
+        icon: const Icon(
+          Icons.star_border_outlined,
+          color: Colors.black,
+          size: 20,
+        ),
+        onPressed: () {setState((){ favouriteFiles.add(name);});},
+      );
+    }
   }
 
 
@@ -171,7 +164,6 @@ class _View extends State<CreateViewFiles>{
     File file = File("$path/$name.png");
     return file;
   }
-
 }
 
 
