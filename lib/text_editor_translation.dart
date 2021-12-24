@@ -18,7 +18,7 @@ class TextEditorTranslation extends StatefulWidget{
 
 }
 
-class _TextEditorTranslation extends State<TextEditorTranslation>{
+class _TextEditorTranslation extends State<TextEditorTranslation> with AutomaticKeepAliveClientMixin{
 
   late ZefyrController _controller;
   late bool _readOnly;
@@ -26,6 +26,10 @@ class _TextEditorTranslation extends State<TextEditorTranslation>{
   String? _selectedLanguage;
   late bool _isChanged;
   late bool _isLoading;
+
+  //override required by AutomaticKeepAliceClientMixin to avoid refresh of this tab bar view
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState(){
@@ -124,7 +128,7 @@ class _TextEditorTranslation extends State<TextEditorTranslation>{
         else...[
           const Center(
               child:
-              SpinKitCircle(
+              SpinKitChasingDots(
                 color: Colors.white,
                 size: 50.0,
               )
