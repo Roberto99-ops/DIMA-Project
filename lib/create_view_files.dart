@@ -8,6 +8,7 @@ import 'package:photocamera_app_test/manage_files.dart';
 import 'package:photocamera_app_test/text_editor.dart';
 import 'package:share/share.dart';
 
+import 'favourites.dart';
 import 'ocr.dart';
 
 
@@ -35,6 +36,7 @@ class _View extends State<CreateViewFiles>{
     files = List.filled(0, "", growable: true);
     favouriteFiles = List.filled(0, "", growable: true);
     updateFiles();
+    //favouriteFiles = getFav();
   }
 
   @override
@@ -104,8 +106,8 @@ class _View extends State<CreateViewFiles>{
   Widget favourites(String name){
     if(favouriteFiles.contains(name)) {
       return IconButton(
-        highlightColor: Colors.blue,
-        splashColor: Colors.blue,
+        highlightColor: Colors.black,
+        splashColor: Colors.black,
         icon: const Icon(
           Icons.star,
           color: Colors.yellow,
