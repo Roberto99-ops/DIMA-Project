@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zefyrka/zefyrka.dart';
 import 'package:quill_format/quill_format.dart';
@@ -106,12 +105,12 @@ class _TextEditorTranslation extends State<TextEditorTranslation> with Automatic
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SettingsWidgetLanguage(
-                        onChanged: (_currentLanguage) {
+                        onChanged: (currentLanguage) {
                           setState(() {
                             _isLoading = true;
                           });
 
-                          _selectedLanguage = _currentLanguage;
+                          _selectedLanguage = currentLanguage;
                           _translateText(widget.doc);
 
                           setState(() {

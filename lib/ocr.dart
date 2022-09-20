@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photocamera_app_test/text_editor.dart';
 import 'package:photocamera_app_test/text_editor_translation.dart';

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,8 +39,8 @@ import 'package:permission_handler/permission_handler.dart';
         await directory.create(recursive: true);
       }
       if (await directory.exists()) {
-        File saveTxtFile = File(directory.path + "/$fileName" + ".txt");
-        File saveImgFile = File(directory.path + "/$fileName" + ".png");
+        File saveTxtFile = File("${directory.path}/$fileName.txt");
+        File saveImgFile = File("${directory.path}/$fileName.png");
 
         String finalString = "";                                //parsing
         List<String> strings = text.split('\n');
@@ -50,7 +49,7 @@ import 'package:permission_handler/permission_handler.dart';
           int start = 3;
           int end = string.length - 3;
           string = string.substring(start, end);
-          if(i!=strings.length-1) string = string + '\n';
+          if(i!=strings.length-1) string = '$string\n';
           finalString = finalString + string;
         }
 
@@ -83,8 +82,8 @@ import 'package:permission_handler/permission_handler.dart';
 
   Future<void> deleteFile(String fileName) async {
     Directory directory = await getApplicationDocumentsDirectory();
-    File TxtFile = File(directory.path + "/$fileName" + ".txt");
-    File ImgFile = File(directory.path + "/$fileName" + ".png");
+    File TxtFile = File("${directory.path}/$fileName.txt");
+    File ImgFile = File("${directory.path}/$fileName.png");
     TxtFile.deleteSync();
     ImgFile.deleteSync();
   }

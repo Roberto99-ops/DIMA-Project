@@ -71,11 +71,11 @@ class _SettingsWidgetLanguageState extends State<SettingsWidgetLanguage> {
                             .toList(),
 
 
-                        onChanged: (_currentLanguage) => {
+                        onChanged: (currentLanguage) => {
                           setState(() {
-                            this._currentLanguage = _currentLanguage!;
+                            _currentLanguage = currentLanguage!;
                           }),
-                          widget.onChanged(_currentLanguage!),
+                          widget.onChanged(currentLanguage!),
                         },
                       ),
                     ),

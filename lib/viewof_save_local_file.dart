@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photocamera_app_test/manage_files.dart';
 
@@ -76,10 +75,10 @@ class _ViewSaveFile extends State<ViewSaveFile>{
                   height: 55,
                   child: ElevatedButton(
                     onPressed: () {setState(() {isReadOnly=true;});},
-                    child: const Text("delete"),
                     style: const ButtonStyle(
                       // minimumSize: MaterialStateProperty.,
-                    )
+                    ),
+                    child: const Text("delete")
                   ),
                   ),
                   const SizedBox(

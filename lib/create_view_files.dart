@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,7 +6,7 @@ import 'package:photocamera_app_test/manage_files.dart';
 import 'package:photocamera_app_test/text_editor.dart';
 import 'package:share/share.dart';
 
-import 'favourites.dart';
+//import 'favourites.dart';
 import 'ocr.dart';
 
 
@@ -67,7 +65,7 @@ class _View extends State<CreateViewFiles>{
               showModalBottomSheet(
                   context: context,
                   builder: (context){
-                    return Container(
+                    return SizedBox(
                       height: 120,
                       child: Column(
                         children: <Widget>[
@@ -86,7 +84,7 @@ class _View extends State<CreateViewFiles>{
                             onTap: () {
                               List <String> dir = List.empty(growable: true);
                               dir.length = 1;
-                              dir[0] = directory.path + "/" + files[index] + ".txt";
+                              dir[0] = "${directory.path}/${files[index]}.txt";
                               Share.shareFiles(dir);
                               Navigator.of(context).pop();
                             },

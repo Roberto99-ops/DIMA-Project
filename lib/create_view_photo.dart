@@ -123,15 +123,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   //this method contains the steps to choose a image from the gallery and convert into text
   chooseImage()
   async {
-    File _pickedImage;
+    XFile? _croppedFile;
     bool _scanning=false;   //useless, is used only to set the state on and off to allow _extractText to be written
     late String _extractText;  //(that's because _extractText is String, and the return value of performOCR is future String)
     setState(() {
       _scanning = true;
     });
-    _pickedImage =
-    await ImagePicker.pickImage(source: ImageSource.gallery);
-    File? _cropped = await cropImage(_pickedImage);
+    _croppedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    File? _cropped = await cropImage(File(_croppedFile!.path));
     _extractText =
     await SimpleOcrPlugin.performOCR(_cropped!.path, delimiter: "\n");// sarebbe fatto per salvare il tutto su un file json, boh pensiamoci
     _extractText = stringRefactor(_extractText);
@@ -194,28 +194,29 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     setState(() {
       scanning = true;
     });
-    File? cropped = await ImageCropper.cropImage(
-        sourcePath: _pickedImage.path,
-        aspectRatio: const CropAspectRatio(
-            ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        maxWidth: 700,
-        maxHeight: 700,
-        compressFormat: ImageCompressFormat.jpg,
-        androidUiSettings: const AndroidUiSettings(
+    CroppedFile? cropped = await ImageCropper().cropImage(
+      sourcePath: _pickedImage.path,
+      aspectRatio: const CropAspectRatio(
+          ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      maxWidth: 700,
+      maxHeight: 700,
+      compressFormat: ImageCompressFormat.jpg,
+      /*androidUiSettings: const AndroidUiSettings(
           toolbarColor: Colors.blue,
           toolbarTitle: "Crop Image",
           statusBarColor: Colors.blue,
           backgroundColor: Colors.white,
           lockAspectRatio: false,
-        )
+        )*/
     );
 
     setState(() {
       scanning = false;
     });
 
-    return cropped;
+    File image = File(cropped!.path);
+    return image;
   }
 
   //this function refactors the text
